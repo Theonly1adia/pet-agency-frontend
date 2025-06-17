@@ -12,6 +12,8 @@ export default function Login({ setToken }) {
     e.preventDefault();
     const credentials = btoa(`${email}:${password}`);
     try {
+
+      console.log("Hello");
       const res = await axios.post(
         "http://localhost:3000/auth/login",
         {},
@@ -22,7 +24,10 @@ export default function Login({ setToken }) {
         }
       );
 
+      console.log("res.data from backend:", res.data)
+
       const token = res.data.token;
+      console.log("Token received from backend", token);
       localStorage.setItem("token", token);
       setToken(token);
       navigate('/'); 

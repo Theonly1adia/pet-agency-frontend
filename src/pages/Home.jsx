@@ -33,15 +33,13 @@ export default function Home() {
 
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-6xl mx-auto">
-          {/* Welcome Text */}
           <header className="text-center mb-10">
             <h1 className="text-4xl font-bold text-purple-600 mb-2">🐾 PetPals Adoption Center</h1>
             <p className="text-gray-600 text-lg">Find your new best friend today.</p>
           </header>
 
-          {/* Recently Added Section */}
           <section>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Recently Added Pets</h2>
+            <h2 className="text-2xl font-semibold flex items-center justify-center text-gray-800 mb-6">Recently Added Pets</h2>
 
             <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {mockPets.map((pet) => (
