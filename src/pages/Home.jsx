@@ -1,32 +1,17 @@
 import { Link } from "react-router-dom";
 import Hero from "../components/Hero";
-
-const mockPets = [
-  {
-    id: 1,
-    name: "Buddy",
-    species: "Dog",
-    age: 3,
-    image_url: "English-Bulldog.jpg",
-  },
-  {
-    id: 2,
-    name: "Whiskers",
-    species: "Cat",
-    age: 2,
-    image_url: "fluffy.jpg",
-  },
-  
-  {
-    id:3,
-    name: "Banjo",
-    species: "Dog",
-    age: 5,
-    image_url: "Banjo.jpeg"
-  }
-];
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
+  const [pets, setPets] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/pets')
+      .then(res => setPets(res.data))
+      .catch(err => console.error('Error fetching pets:', err));
+  }, []);
+
   return (
     <>
       <Hero />
@@ -39,27 +24,28 @@ export default function Home() {
           </header>
 
           <section>
-            <h2 className="text-2xl font-semibold flex items-center justify-center text-gray-800 mb-6">Recently Added Pets</h2>
+            <h2 className="text-2xl font-semibold flex items-center justify-center text-gray-800 mb-6">
+              Recently Added Pets
+            </h2>
 
-            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {mockPets.map((pet) => (
-                <div
-                  key={pet.id}
-                  className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
-                >
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {pets.map((pet) => (
+                <div key={pet.id} className="bg-white shadow-md rounded-lg overflow-hidden">
                   <img
                     src={pet.image_url}
                     alt={pet.name}
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-4">
-                    <h3 className="text-xl font-semibold text-gray-800">{pet.name}</h3>
-                    <p className="text-gray-500">{pet.species} • {pet.age} years old</p>
-                    <Link
-                      to={`/pet/${pet.id}`}
-                      className="inline-block mt-4 text-purple-600 hover:text-purple-800 font-medium"
-                    >
-                      View Details →
+                    <h2 className="text-xl font-semibold">{pet.name}</h2>
+                    <p className="text-gray-600">
+                      {pet.species}, {pet.age} years old
+                      <br/>{pet.description}
+                    </p>
+                    <Link to={`/pet/${pet.id}`}>
+                      <button className="mt-3 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+                        View Profile
+                      </button>
                     </Link>
                   </div>
                 </div>

@@ -6,6 +6,7 @@ export default function AddPet() {
     name: '',
     species: '',
     age: '',
+    description: '',
     image: null,
   });
 
@@ -20,28 +21,45 @@ export default function AddPet() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => {
-      formData.append(key, value);
+  e.preventDefault();
+
+  const formData = new FormData();
+  Object.entries(form).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await axios.post("http://localhost:3000/pets", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
     });
 
-    const token = localStorage.getItem("token");
+    setPet(res.data.pet);
 
-    try {
-      const res = await axios.post("http://localhost:3000/pets", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+    setForm({
+      name: '',
+      species: '',
+      age: '',
+      description: '',
+      image: null,
+    });
 
-      setPet(res.data.pet);
-    } catch (err) {
-      alert("Failed to upload pet");
-      console.error(err);
+    const imageInput = document.getElementById("imageInput");
+    if (imageInput) {
+      imageInput.value = null;
     }
-  };
+
+  } catch (err) {
+    alert("Failed to upload pet");
+    console.error(err);
+  }
+};
+
+
 
   return (
     <div
@@ -50,9 +68,10 @@ export default function AddPet() {
     >
       <div className="bg-white/70 bg-opacity-90 backdrop-blur-sm p-8 rounded-xl shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold text-purple-700 mb-4 text-center">Add a New Pet</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit}  encType="multipart/form-data" className="space-y-4">
           <input
             name="name"
+            value={form.name}
             placeholder="Pet Name"
             onChange={handleChange}
             required
@@ -60,6 +79,7 @@ export default function AddPet() {
           />
           <input
             name="species"
+            value={form.species}
             placeholder="Species (e.g., Dog, Cat)"
             onChange={handleChange}
             required
@@ -67,6 +87,7 @@ export default function AddPet() {
           />
           <input
             name="age"
+            value={form.age}
             type="number"
             placeholder="Age"
             onChange={handleChange}
@@ -74,6 +95,15 @@ export default function AddPet() {
             className="w-full border border-gray-300 rounded px-3 py-2"
           />
           <input
+            name="description"
+            value={form.description}
+            placeholder="Description (e.g., Playful, Cuddly)"
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded px-3 py-2"
+          />
+          <input
+            id="imageInput"
             name="image"
             type="file"
             accept="image/*"
@@ -104,6 +134,11 @@ export default function AddPet() {
             </div>
           </div>
         )}
+        {pet && (
+  <div className="mt-4 text-green-700 font-semibold text-center">
+    {pet.name} has been added successfully!
+  </div>
+)}
       </div>
     </div>
   );

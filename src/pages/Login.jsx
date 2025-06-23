@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 export default function Login({ setToken }) {
   const [email, setEmail] = useState("");
@@ -107,6 +108,14 @@ export default function Login({ setToken }) {
           {error && (
             <p className="text-red-600 mt-2 text-center font-medium">{error}</p>
           )}
+
+          <p className="mt-4 text-sm text-center text-gray-700">
+          Don't have an account?{' '}
+          <Link to="/register" className="text-blue-600 hover:underline">
+            Register here
+          </Link>
+        </p>
+
         </div>
       </div>
     </div>
