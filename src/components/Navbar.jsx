@@ -5,12 +5,12 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // 👈 Detect route changes
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
-  }, [location]); // 👈 re-check login state on route change
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -22,21 +22,24 @@ export default function Navbar() {
     <nav className="bg-blue-600 text-white">
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         <h1 className="text-xl font-bold">
-          <Link to="/">Furr-Ever Friend Finder</Link>
+          <Link to={isLoggedIn ? "/mypets" : "/"}>Furr-Ever Friend Finder</Link>
         </h1>
 
         <div className="hidden md:flex space-x-6 items-center">
           <Link to="/" className="hover:underline">Home</Link>
           <Link to="/about" className="hover:underline">About</Link>
           {isLoggedIn && (
-            <Link to="/add-pet" className="hover:underline">Add Pet</Link>
+            <>
+              <Link to="/add-pet" className="hover:underline">Add Pet</Link>
+              <Link to="/mypets" className="hover:underline">My Pets</Link>
+            </>
           )}
           {!isLoggedIn ? (
             <Link to="/login" className="hover:underline">Login</Link>
           ) : (
             <button
               onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+              className="hover:bg-blue-300 text-white px-3 py-1 rounded"
             >
               Logout
             </button>
@@ -68,7 +71,10 @@ export default function Navbar() {
           <Link to="/" className="block hover:underline">Home</Link>
           <Link to="/about" className="block hover:underline">About</Link>
           {isLoggedIn && (
-            <Link to="/add-pet" className="block hover:underline">Add Pet</Link>
+            <>
+              <Link to="/add-pet" className="block hover:underline">Add Pet</Link>
+              <Link to="/mypets" className="block hover:underline">My Pets</Link>
+            </>
           )}
           {!isLoggedIn ? (
             <Link to="/login" className="block hover:underline">Login</Link>

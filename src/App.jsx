@@ -29,8 +29,9 @@ function App() {
         <Route path="/pet/:id" element={<PetProfile />} />
         <Route path="/register" element={<SignupForm />}/>
         //Protected Routes with Token
-        <Route path="/my-pets" element={token ? <MyPets /> : <Navigate to="/login" />} />
+        <Route path="/mypets" element={token ? <MyPets /> : <Navigate to="/login" />} />
         <Route path="/add-pet" element={token ? <AddPet /> : <Navigate to="/login" />} />
+        
       </Routes>
     </Router>
   );

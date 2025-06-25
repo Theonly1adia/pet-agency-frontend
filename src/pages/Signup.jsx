@@ -33,7 +33,7 @@ export default function SignupForm() {
 
       setTimeout(() => {
         navigate('/login');
-      }, 3000); // 3 second delay before navigating
+      }, 3000); 
     } catch (error) {
       console.error('Signup error', error);
       setSuccessMessage('');
